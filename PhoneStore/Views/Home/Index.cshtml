@@ -1,0 +1,51 @@
+﻿@model List<Phone>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="containerIndex" xmlns="http://www.w3.org/1999/html">
+    <div class ="infoDb">
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
+            }
+            <form method="post" asp-action="Delete" asp-controller="Home">
+                <input type="text" name="nameToDelete"/>
+                <input type="submit" value="Удалить"/>
+            </form>
+        </ul>  
+    </div>
+    <div class="calc">
+        <form id="formCalcPrice">
+            <label>Первый телефон:</label>
+            <input type="text" id="nameOnePhone" value="IPhone10"/>
+            <label>Второй телефон:</label>
+            <input type="text" id="nameSecondPhone" value="IPhone8"/>
+            <input type="submit" id="calcPrice" value="Рассчитать разницу"/>
+            <input type="text" value="" id="resPrice" readonly/>
+        </form>
+    </div>
+    <div class="insertPhone">
+        <form id="formInsertPhone">
+            <label>Название телефона:</label>
+            <input type="text" id="namePhone"/>
+            <label>Страна производителя:</label>
+            <input type="text" id="countryPhone"/>
+            <label>Цена:</label>
+            <input type="text" id="pricePhone"/>
+            <label>Производитель:</label>
+            <select id="companyPhone">
+                @foreach (var item in ViewBag.Company)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <input type="submit" value="Добавить"/>
+            <label id="resultInfo"></label>
+        </form>
+    </div>
+</div>
+
+
+

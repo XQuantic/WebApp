@@ -1,0 +1,36 @@
+﻿.containerIndex div {
+   position: absolute;
+   margin-top: 50px;
+   margin-left: 400px;
+}
+.containerIndex .infoDb {
+  margin-left: 360px;
+}
+.containerIndex .calc {
+   margin-top: 200px;
+ }
+.containerIndex .insertPhone {
+  margin-top: 200px;
+}
+.calc * {
+  display: block;
+  margin-left: 100px;
+  margin-top: 10px;
+}
+.insertPhone * {
+  display: block;
+  margin-top: 10px;
+}
+.deleteContainer{
+  margin-top: 20px;
+}
+li {
+  list-style-type: none;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; 
+}
