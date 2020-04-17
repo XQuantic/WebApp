@@ -44,11 +44,13 @@ namespace PhoneStore.Controllers
         }
         
         [HttpPost]
-        public IActionResult Delete(string nameToDelete)
+        public IActionResult Delete([FromForm] string nameToDelete)
         {
-            if (String.IsNullOrEmpty(nameToDelete))
-                return RedirectToAction("Index");
             Phone phone = _db.Phones.FirstOrDefault(x => x.Name == nameToDelete);
+            if (phone == null)
+            {
+                return RedirectToAction("Index");
+            }
             _db.Phones.Remove(phone);
             _db.SaveChanges();
             return RedirectToAction("Index");
@@ -57,13 +59,12 @@ namespace PhoneStore.Controllers
         [HttpPut]
         public IActionResult InsertPhone([FromBody] InsertPhone phone)
         {
-            if (String.IsNullOrEmpty(phone.CompanyPhone) || String.IsNullOrEmpty(phone.CountryPhone) ||
-                String.IsNullOrEmpty(phone.PricePhone) || String.IsNullOrEmpty(phone.NamePhone))
+            if(String.IsNullOrEmpty(phone.NamePhone))
             {
                 Response.StatusCode = (int)HttpStatusCode.Conflict;
-                return Json("Please fill fields");
+                return Json("Please fill name field");
             }
-            Phone data = new Phone() {CompanyId = Convert.ToInt32(phone.CompanyPhone), Country = phone.CountryPhone, Name = phone.NamePhone, Price = Convert.ToDouble(phone.PricePhone)};
+            Phone data = new Phone() {CompanyId = phone.CompanyPhone, Country = phone.CountryPhone, Name = phone.NamePhone, Price = phone.PricePhone};
             _db.Phones.Add(data);
             _db.SaveChanges();
             return Json("Insert completed");

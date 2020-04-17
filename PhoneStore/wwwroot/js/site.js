@@ -3,7 +3,7 @@
     $('#formCalcPrice').submit(function (e)
     {
         e.preventDefault();
-        let data = {};
+        var data = {};
         data["NameOnePhone"] = $('#nameOnePhone').val();
         data["NameSecondPhone"] = $('#nameSecondPhone').val();
         $.ajax({
@@ -24,11 +24,12 @@
     $('#formInsertPhone').submit(function (e)
     {
         e.preventDefault();
-        let data = {};
-        data["NamePhone"] = $('#namePhone').val();
-        data["CountryPhone"] = $('#countryPhone').val();
-        data["PricePhone"] = $('#pricePhone').val();
-        data["CompanyPhone"] = $('#companyPhone').val();
+        var data = {
+            NamePhone: $('#namePhone').val(),
+            CountryPhone: $('#countryPhone').val(),
+            PricePhone: parseInt($('#pricePhone').val()),
+            CompanyPhone: parseInt($('#companyPhone').val())
+        };
         $.ajax({
             type: 'put',
             contentType: 'application/json',

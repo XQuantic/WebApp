@@ -12,36 +12,36 @@
             }
             <form method="post" asp-action="Delete" asp-controller="Home">
                 <input type="text" name="nameToDelete"/>
-                <input type="submit" value="Удалить"/>
+                <input type="submit" value="Delete"/>
             </form>
         </ul>  
     </div>
     <div class="calc">
         <form id="formCalcPrice">
-            <label>Первый телефон:</label>
+            <label>First phone:</label>
             <input type="text" id="nameOnePhone" value="IPhone10"/>
-            <label>Второй телефон:</label>
+            <label>Second phone:</label>
             <input type="text" id="nameSecondPhone" value="IPhone8"/>
-            <input type="submit" id="calcPrice" value="Рассчитать разницу"/>
+            <input type="submit" id="calcPrice" value="Calculate price"/>
             <input type="text" value="" id="resPrice" readonly/>
         </form>
     </div>
     <div class="insertPhone">
         <form id="formInsertPhone">
-            <label>Название телефона:</label>
+            <label>Name phone:</label>
             <input type="text" id="namePhone"/>
-            <label>Страна производителя:</label>
+            <label>Country phone company:</label>
             <input type="text" id="countryPhone"/>
-            <label>Цена:</label>
+            <label>Price:</label>
             <input type="text" id="pricePhone"/>
-            <label>Производитель:</label>
+            <label>Company:</label>
             <select id="companyPhone">
                 @foreach (var item in ViewBag.Company)
                 {
                     <option value="@item.Id">@item.Name</option>
                 }
             </select>
-            <input type="submit" value="Добавить"/>
+            <input type="submit" value="Insert"/>
             <label id="resultInfo"></label>
         </form>
     </div>

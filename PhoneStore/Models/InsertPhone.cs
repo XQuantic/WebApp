@@ -4,7 +4,7 @@
     {
         public string NamePhone { get; set; }
         public string CountryPhone { get; set; }
-        public string PricePhone { get; set; }
-        public string CompanyPhone { get; set; }
+        public double PricePhone { get; set; }
+        public int CompanyPhone { get; set; }
     }
 }
