@@ -10,7 +10,7 @@ using PhoneStore.ViewModels;
 
 namespace PhoneStore.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, user", Policy = "AppleCompany")]
     public class HomeController : Controller
     {
         private readonly MyDbContext _db;
@@ -29,6 +29,20 @@ namespace PhoneStore.Controllers
             var result = await _db.Phones.Include(x => x.Company).ToListAsync();
             ViewBag.Company = _db.Companies.Select(x => x);
             return View(result);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Errors(string errorCode)
+        {
+            return Json($"Status code {errorCode}");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Error()
+        {
+            return Content("Error");
         }
 
         [HttpPost]

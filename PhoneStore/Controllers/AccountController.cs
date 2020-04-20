@@ -71,7 +71,12 @@ namespace PhoneStore.Controllers
                 User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    user = new User {Email = model.Email, Password = model.Password};
+                    user = new User
+                    {
+                        Email = model.Email, 
+                        Password = model.Password,
+                        Company = model.Company
+                    };
                     Role userRole = await _db.Roles.FirstOrDefaultAsync(x => x.Name == "user");
                     if (userRole != null) user.Role = userRole;
                     await _db.Users.AddAsync(user);
@@ -93,7 +98,8 @@ namespace PhoneStore.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name),
+                new Claim("Company", user.Company)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));

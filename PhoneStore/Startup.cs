@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,13 @@ namespace PhoneStore
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                 });
-            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AppleCompany", policy =>
+                {
+                    policy.RequireClaim("Company", "Apple");
+                });
+            });
             services.AddTransient<ICalculate, PriceCalculate>();
             
         }
@@ -46,6 +53,7 @@ namespace PhoneStore
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/Home/Errors/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -54,6 +62,11 @@ namespace PhoneStore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "errors",
+                    pattern: "Home/Errors/{errorCode}",
+                    defaults: new { controller = "Home", action = "Errors" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 
@@ -61,11 +74,6 @@ namespace PhoneStore
                     name: "phoneStore",
                     pattern: "PhoneStore",
                     defaults: new { controller = "Home", action = "Index" });
-                
-                endpoints.MapControllerRoute(
-                    name: "phoneStoreAct",
-                    pattern: "PhoneStore{action}",
-                    defaults: new { controller = "Home" });
 
             });
         }

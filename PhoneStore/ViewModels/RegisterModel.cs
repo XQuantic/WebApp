@@ -7,6 +7,8 @@ namespace PhoneStore.ViewModels
         [Required]
         public string Email { get; set; }
         [Required]
+        public string Company { get; set; }
+        [Required]
         public string Password { get; set; }
         [Required]
         
