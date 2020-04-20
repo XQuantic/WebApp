@@ -7,9 +7,11 @@ using PhoneStore.ViewModels;
 using PhoneStore.Models; 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PhoneStore.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly MyDbContext _db;
@@ -22,12 +24,22 @@ namespace PhoneStore.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
             return View();
         }
         
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            if (!User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
+            if (User.IsInRole("admin")) return RedirectToAction("Index", "Home");
             return View();
         }
         

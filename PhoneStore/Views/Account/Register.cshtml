@@ -1,7 +1,9 @@
 ﻿@model PhoneStore.ViewModels.RegisterModel
-
+@{
+    ViewData["Title"] = "Register";
+}
 <div class="registerForm">
-    <form asp-controller="Account" asp-action="Register" method="post">
+    <form method="post" asp-controller="Account" asp-action="Register">
         <h2>Register</h2>
         <label asp-for="Email">Enter Email</label>
         <input type="text" asp-for="Email"/>
