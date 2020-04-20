@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,11 @@ namespace PhoneStore
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllersWithViews();
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
             
             services.AddTransient<ICalculate, PriceCalculate>();
             
@@ -42,7 +48,8 @@ namespace PhoneStore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();    
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -3,6 +3,19 @@
    margin-top: 50px;
    margin-left: 400px;
 }
+.registerForm{
+    margin-left: 405px;
+}
+#inputRegisterForm{
+    margin-top: 10px;
+}
+#inputLoginForm{
+    margin-top: 10px;
+}
+.loginForm{
+    display: block;
+    margin-left: 405px;
+}
 .containerIndex .infoDb {
   margin-left: 360px;
 }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneStore.Models;
 using PhoneStore.Services;
+using PhoneStore.ViewModels;
 
 namespace PhoneStore.Controllers
 {
@@ -19,6 +20,7 @@ namespace PhoneStore.Controllers
             _calculate = calculate;
         }
         
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -30,6 +32,11 @@ namespace PhoneStore.Controllers
         [HttpPost]
         public IActionResult CalcPrice([FromBody] NamePhones phones)
         {
+            if (!ModelState.IsValid)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json("Please fill fields");
+            }
             var phoneOne = _db.Phones.FirstOrDefault(x => x.Name == phones.NameOnePhone);
             var phoneSecond = _db.Phones.FirstOrDefault(x => x.Name == phones.NameSecondPhone);
             if (phoneOne == null || phoneSecond == null)
@@ -59,10 +66,10 @@ namespace PhoneStore.Controllers
         [HttpPut]
         public IActionResult InsertPhone([FromBody] InsertPhone phone)
         {
-            if(String.IsNullOrEmpty(phone.NamePhone))
+            if(!ModelState.IsValid)
             {
                 Response.StatusCode = (int)HttpStatusCode.Conflict;
-                return Json("Please fill name field");
+                return Json("Please fill fields");
             }
             Phone data = new Phone() {CompanyId = phone.CompanyPhone, Country = phone.CountryPhone, Name = phone.NamePhone, Price = phone.PricePhone};
             _db.Phones.Add(data);
