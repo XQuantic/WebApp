@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,36 +10,37 @@ using PhoneStore.ViewModels;
 
 namespace PhoneStore.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class HomeController : Controller
     {
         private readonly MyDbContext _db;
         private readonly ICalculate _calculate;
         
+
         public HomeController(MyDbContext context, ICalculate calculate)
         {
             _db = context;
             _calculate = calculate;
         }
         
-        [Authorize]
         [HttpGet]
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            var result = _db.Phones.Include(x => x.Company).ToList();
+            var result = await _db.Phones.Include(x => x.Company).ToListAsync();
             ViewBag.Company = _db.Companies.Select(x => x);
             return View(result);
         }
 
         [HttpPost]
-        public IActionResult CalcPrice([FromBody] NamePhones phones)
+        public async Task<IActionResult> CalcPrice([FromBody] NamePhones phones)
         {
             if (!ModelState.IsValid)
             {
-                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                Response.StatusCode = (int)HttpStatusCode.Conflict;
                 return Json("Please fill fields");
             }
-            var phoneOne = _db.Phones.FirstOrDefault(x => x.Name == phones.NameOnePhone);
-            var phoneSecond = _db.Phones.FirstOrDefault(x => x.Name == phones.NameSecondPhone);
+            var phoneOne = await _db.Phones.FirstOrDefaultAsync(x => x.Name == phones.NameOnePhone);
+            var phoneSecond = await _db.Phones.FirstOrDefaultAsync(x => x.Name == phones.NameSecondPhone);
             if (phoneOne == null || phoneSecond == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -51,20 +53,20 @@ namespace PhoneStore.Controllers
         }
         
         [HttpPost]
-        public IActionResult Delete([FromForm] string nameToDelete)
+        public async Task<IActionResult> Delete([FromForm] string nameToDelete)
         {
-            Phone phone = _db.Phones.FirstOrDefault(x => x.Name == nameToDelete);
+            Phone phone = await _db.Phones.FirstOrDefaultAsync(x => x.Name == nameToDelete);
             if (phone == null)
             {
                 return RedirectToAction("Index");
             }
             _db.Phones.Remove(phone);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         
         [HttpPut]
-        public IActionResult InsertPhone([FromBody] InsertPhone phone)
+        public async Task<IActionResult> InsertPhone([FromBody] InsertPhone phone)
         {
             if(!ModelState.IsValid)
             {
@@ -72,8 +74,8 @@ namespace PhoneStore.Controllers
                 return Json("Please fill fields");
             }
             Phone data = new Phone() {CompanyId = phone.CompanyPhone, Country = phone.CountryPhone, Name = phone.NamePhone, Price = phone.PricePhone};
-            _db.Phones.Add(data);
-            _db.SaveChanges();
+            await _db.Phones.AddAsync(data);
+            await _db.SaveChangesAsync();
             return Json("Insert completed");
         }
     }

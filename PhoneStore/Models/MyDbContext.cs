@@ -7,6 +7,7 @@ namespace PhoneStore.Models
         public DbSet<Company> Companies { get; set; }
         public DbSet<Phone> Phones { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public MyDbContext(DbContextOptions options)
             : base(options)
         {

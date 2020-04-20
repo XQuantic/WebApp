@@ -2,20 +2,21 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<div class ="infoDb">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
+        }
+        <form method="post" asp-action="Delete" asp-controller="Home">
+            <input type="text" name="nameToDelete"/>
+            <input type="submit" value="Delete"/>
+        </form>
+    </ul>  
+</div>
 
-<div class="containerIndex" xmlns="http://www.w3.org/1999/html">
-    <div class ="infoDb">
-        <ul>
-            @foreach (var item in Model)
-            {
-                <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
-            }
-            <form method="post" asp-action="Delete" asp-controller="Home">
-                <input type="text" name="nameToDelete"/>
-                <input type="submit" value="Delete"/>
-            </form>
-        </ul>  
-    </div>
+<div class="containerIndex">
+    
     <div class="calc">
         <form id="formCalcPrice">
             <label>First phone:</label>
@@ -26,6 +27,7 @@
             <input type="text" value="" id="resPrice" readonly/>
         </form>
     </div>
+
     <div class="insertPhone">
         <form id="formInsertPhone">
             <label>Name phone:</label>
@@ -45,6 +47,7 @@
             <label id="resultInfo"></label>
         </form>
     </div>
+    
 </div>
 
 

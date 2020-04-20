@@ -1,10 +1,10 @@
-﻿.containerIndex div {
-   position: absolute;
-   margin-top: 50px;
-   margin-left: 400px;
+﻿.registerForm *{
+    display: block;
+    margin-left: 203px;
 }
-.registerForm{
-    margin-left: 405px;
+.loginForm *{
+    display: block;
+    margin-left: 203px;
 }
 #inputRegisterForm{
     margin-top: 10px;
@@ -12,22 +12,24 @@
 #inputLoginForm{
     margin-top: 10px;
 }
-.loginForm{
-    display: block;
-    margin-left: 405px;
+.infoDb{
+    margin-left: 365px;
 }
-.containerIndex .infoDb {
-  margin-left: 360px;
+.containerIndex{
+    margin-left: 395px;
 }
-.containerIndex .calc {
-   margin-top: 200px;
- }
-.containerIndex .insertPhone {
-  margin-top: 200px;
+.containerIndex div{
+    position: absolute;
+    display: inline-block;
+}
+.calc{
+    margin-left: 200px;
+}
+.insertPhone{
+    margin-left: 10px;
 }
 .calc * {
   display: block;
-  margin-left: 100px;
   margin-top: 10px;
 }
 .insertPhone * {

@@ -1,18 +1,13 @@
 ﻿@model PhoneStore.ViewModels.LoginModel
 
+
 <div class="loginForm">
-    <a asp-action="Register" asp-controller="Account">Register</a>
-    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" method="post">
-            <div>
-                <label asp-for="Email">Enter Email</label><br />
-                <input type="text" asp-for="Email"/>
-            </div>
-            <div>
-                <label asp-for="Password">Enter Password</label><br />
-                <input type="password" asp-for="Password"/>
-            </div>
-            <div>
-                <input id="inputLoginForm" type="submit" value="Login"/>
-            </div>
+    <form asp-action="Login" asp-controller="Account" method="post">
+        <a asp-action="Register" asp-controller="Account">Register</a>
+        <label asp-for="Email">Enter Email</label>
+        <input type="text" asp-for="Email"/>
+        <label asp-for="Password">Enter Password</label>
+        <input type="password" asp-for="Password"/>
+        <input id="inputLoginForm" type="submit" value="Login"/>
     </form>
 </div>

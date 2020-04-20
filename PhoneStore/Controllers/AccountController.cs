@@ -7,6 +7,7 @@ using PhoneStore.ViewModels;
 using PhoneStore.Models; 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace PhoneStore.Controllers
 {
     public class AccountController : Controller
@@ -36,10 +37,13 @@ namespace PhoneStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                User user = await _db.Users
+                    .Include(x => x.Role)
+                    .FirstOrDefaultAsync(x => x.Email == model.Email && x.Password == model.Password);
+                
                 if (user != null)
                 {
-                    await Authenticate(model.Email);
+                    await Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -55,9 +59,12 @@ namespace PhoneStore.Controllers
                 User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    await _db.Users.AddAsync(new User { Email = model.Email, Password = model.Password });
+                    user = new User {Email = model.Email, Password = model.Password};
+                    Role userRole = await _db.Roles.FirstOrDefaultAsync(x => x.Name == "user");
+                    if (userRole != null) user.Role = userRole;
+                    await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
-                    await Authenticate(model.Email);
+                    await Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -69,11 +76,12 @@ namespace PhoneStore.Controllers
             return RedirectToAction("Login", "Account");
         }
         
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
