@@ -24,7 +24,7 @@ namespace PhoneStore
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllersWithViews();
-            services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -38,6 +38,8 @@ namespace PhoneStore
                     policy.RequireClaim("Company", "Apple");
                 });
             });
+            
+            services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
             services.AddTransient<ICalculate, PriceCalculate>();
             
         }

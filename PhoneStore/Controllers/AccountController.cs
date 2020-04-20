@@ -55,7 +55,7 @@ namespace PhoneStore.Controllers
                 
                 if (user != null)
                 {
-                    await Authenticate(user);
+                    await Authenticate(user, model.Remember);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -81,8 +81,7 @@ namespace PhoneStore.Controllers
                     if (userRole != null) user.Role = userRole;
                     await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
-                    await Authenticate(user);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
             }
             return View();
@@ -93,7 +92,7 @@ namespace PhoneStore.Controllers
             return RedirectToAction("Login", "Account");
         }
         
-        private async Task Authenticate(User user)
+        private async Task Authenticate(User user, bool persistent)
         {
             var claims = new List<Claim>
             {
@@ -102,7 +101,7 @@ namespace PhoneStore.Controllers
                 new Claim("Company", user.Company)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id), new AuthenticationProperties {IsPersistent = persistent});
         }
  
 

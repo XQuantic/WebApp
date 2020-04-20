@@ -35,7 +35,7 @@ namespace PhoneStore.Controllers
         [HttpGet]
         public IActionResult Errors(string errorCode)
         {
-            return Json($"Status code {errorCode}");
+            return Content($"Status code {errorCode}");
         }
 
         [AllowAnonymous]

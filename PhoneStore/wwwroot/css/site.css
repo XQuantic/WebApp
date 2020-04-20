@@ -39,6 +39,9 @@
 .deleteContainer{
   margin-top: 20px;
 }
+#accessDenied{
+    margin-left: 400px;
+}
 li {
   list-style-type: none;
 }

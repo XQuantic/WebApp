@@ -6,11 +6,13 @@
     <form method="post" asp-controller="Account" asp-action="Register">
         <h2>Register</h2>
         <label asp-for="Email">Enter Email</label>
-        <input type="text" asp-for="Email"/>
+        <input asp-for="Email"/>
+        <label asp-for="Company">Enter Company</label>
+        <input asp-for="Company"/>
         <label asp-for="Password">Enter Password</label>
-        <input type="password" asp-for="Password"/>
+        <input asp-for="Password"/>
         <label asp-for="ConfirmPassword">Confirm Password</label>
-        <input type="password" asp-for="ConfirmPassword"/>
+        <input asp-for="ConfirmPassword"/>
         <input id="inputRegisterForm" type="submit" value="Register"/>
     </form>
 </div>
