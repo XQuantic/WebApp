@@ -6,7 +6,6 @@ using System.Security.Claims;
 using PhoneStore.ViewModels; 
 using PhoneStore.Models; 
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
 namespace PhoneStore.Controllers
@@ -88,22 +87,25 @@ namespace PhoneStore.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync("BasicScheme");
             return RedirectToAction("Login", "Account");
         }
         
         private async Task Authenticate(User user, bool persistent)
         {
-            var claims = new List<Claim>
+            List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name),
+                new Claim("Name", user.Email),
+                new Claim("Role", user.Role?.Name),
                 new Claim("Company", user.Company)
             };
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id), new AuthenticationProperties {IsPersistent = persistent});
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", "Name", "Role");
+            ClaimsPrincipal principal = new ClaimsPrincipal(id);
+            AuthenticationProperties properties = new AuthenticationProperties
+            {
+                IsPersistent = persistent,
+            };
+            await HttpContext.SignInAsync("BasicScheme", principal, properties);
         }
- 
-
     }
 }

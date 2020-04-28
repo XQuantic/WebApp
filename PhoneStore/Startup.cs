@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,8 +23,8 @@ namespace PhoneStore
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllersWithViews();
             
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            services.AddAuthentication("BasicScheme")
+                .AddCookie("BasicScheme",options =>
                 {
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/Account/AccessDenied";
@@ -53,7 +51,6 @@ namespace PhoneStore
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
             app.UseStatusCodePagesWithReExecute("/Home/Errors/{0}");
             app.UseHttpsRedirection();

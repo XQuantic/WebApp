@@ -1,10 +1,10 @@
-﻿@model List<Phone>
+﻿@model IndexModel
 @{
     ViewData["Title"] = "Home Page";
 }
 <div class ="infoDb">
     <ul>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Phones)
         {
             <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
         }
@@ -38,7 +38,7 @@
             <input type="text" id="pricePhone"/>
             <label>Company:</label>
             <select id="companyPhone">
-                @foreach (var item in ViewBag.Company)
+                @foreach (var item in Model.Companies)
                 {
                     <option value="@item.Id">@item.Name</option>
                 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -26,9 +27,14 @@ namespace PhoneStore.Controllers
         [HttpGet]
         public async Task <IActionResult> Index()
         {
-            var result = await _db.Phones.Include(x => x.Company).ToListAsync();
-            ViewBag.Company = _db.Companies.Select(x => x);
-            return View(result);
+            var phones = await _db.Phones.Include(x => x.Company).ToListAsync();
+            var companies =await _db.Companies.Select(x => x).ToListAsync();
+            IndexModel indexModel = new IndexModel
+            {
+                Phones = phones,
+                Companies = companies
+            };
+            return View(indexModel);
         }
         
         [AllowAnonymous]
@@ -44,7 +50,7 @@ namespace PhoneStore.Controllers
         {
             return Content("Error");
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> CalcPrice([FromBody] NamePhones phones)
         {
@@ -87,7 +93,13 @@ namespace PhoneStore.Controllers
                 Response.StatusCode = (int)HttpStatusCode.Conflict;
                 return Json("Please fill fields");
             }
-            Phone data = new Phone() {CompanyId = phone.CompanyPhone, Country = phone.CountryPhone, Name = phone.NamePhone, Price = phone.PricePhone};
+            Phone data = new Phone
+            {
+                CompanyId = phone.CompanyPhone,
+                Country = phone.CountryPhone,
+                Name = phone.NamePhone,
+                Price = phone.PricePhone
+            };
             await _db.Phones.AddAsync(data);
             await _db.SaveChangesAsync();
             return Json("Insert completed");
