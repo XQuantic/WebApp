@@ -13,11 +13,11 @@ namespace PhoneStore.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly MyDbContext _db;
+        private readonly IRepository _repository;
 
-        public AccountController(MyDbContext context)
+        public AccountController(IRepository repository)
         {
-            _db = context;
+            _repository = repository;
         }
         
         [HttpGet]
@@ -48,10 +48,7 @@ namespace PhoneStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _db.Users
-                    .Include(x => x.Role)
-                    .FirstOrDefaultAsync(x => x.Email == model.Email && x.Password == model.Password);
-                
+                User user = await _repository.GetUser(model.Email, model.Password);
                 if (user != null)
                 {
                     await Authenticate(user, model.Remember);
@@ -67,7 +64,7 @@ namespace PhoneStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                User user = await _repository.GetUser(model.Email);
                 if (user == null)
                 {
                     user = new User
@@ -76,10 +73,9 @@ namespace PhoneStore.Controllers
                         Password = model.Password,
                         Company = model.Company
                     };
-                    Role userRole = await _db.Roles.FirstOrDefaultAsync(x => x.Name == "user");
+                    Role userRole = await _repository.GetRole("user");
                     if (userRole != null) user.Role = userRole;
-                    await _db.Users.AddAsync(user);
-                    await _db.SaveChangesAsync();
+                    await _repository.InsertUser(user);
                     return RedirectToAction("Login", "Account");
                 }
             }

@@ -38,6 +38,7 @@ namespace PhoneStore
             });
             
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
+            services.AddScoped<IRepository, Repository>();
             services.AddTransient<ICalculate, PriceCalculate>();
             
         }

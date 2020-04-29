@@ -14,21 +14,21 @@ namespace PhoneStore.Controllers
     [Authorize(Roles = "admin, user", Policy = "AppleCompany")]
     public class HomeController : Controller
     {
-        private readonly MyDbContext _db;
+        private readonly IRepository _repository;
         private readonly ICalculate _calculate;
         
 
-        public HomeController(MyDbContext context, ICalculate calculate)
+        public HomeController(IRepository repository, ICalculate calculate)
         {
-            _db = context;
+            _repository = repository;
             _calculate = calculate;
         }
         
         [HttpGet]
         public async Task <IActionResult> Index()
         {
-            var phones = await _db.Phones.Include(x => x.Company).ToListAsync();
-            var companies =await _db.Companies.Select(x => x).ToListAsync();
+            var phones = await _repository.GetPhones();
+            var companies = await _repository.GetCompanies();
             IndexModel indexModel = new IndexModel
             {
                 Phones = phones,
@@ -59,8 +59,8 @@ namespace PhoneStore.Controllers
                 Response.StatusCode = (int)HttpStatusCode.Conflict;
                 return Json("Please fill fields");
             }
-            var phoneOne = await _db.Phones.FirstOrDefaultAsync(x => x.Name == phones.NameOnePhone);
-            var phoneSecond = await _db.Phones.FirstOrDefaultAsync(x => x.Name == phones.NameSecondPhone);
+            var phoneOne = await _repository.GetPhone(phones.NameOnePhone);
+            var phoneSecond = await _repository.GetPhone(phones.NameSecondPhone);
             if (phoneOne == null || phoneSecond == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -75,13 +75,12 @@ namespace PhoneStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromForm] string nameToDelete)
         {
-            Phone phone = await _db.Phones.FirstOrDefaultAsync(x => x.Name == nameToDelete);
+            Phone phone = await _repository.GetPhone(nameToDelete);
             if (phone == null)
             {
                 return RedirectToAction("Index");
             }
-            _db.Phones.Remove(phone);
-            await _db.SaveChangesAsync();
+            await _repository.RemovePhone(phone);
             return RedirectToAction("Index");
         }
         
@@ -100,8 +99,7 @@ namespace PhoneStore.Controllers
                 Name = phone.NamePhone,
                 Price = phone.PricePhone
             };
-            await _db.Phones.AddAsync(data);
-            await _db.SaveChangesAsync();
+            await _repository.InsertPhone(data);
             return Json("Insert completed");
         }
     }
