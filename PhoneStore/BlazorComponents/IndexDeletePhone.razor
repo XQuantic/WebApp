@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using PhoneStore.Models
+@inject IRepository _repository
+
+@if (_phones == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <ul>
+        @foreach (var item in _phones)
+        {
+            <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
+        }
+    </ul>
+    <div class="deleteForm">
+        <input @bind="nameToDelete"/>
+        <button @onclick="DeletePhone">Delete</button>
+    </div>
+    
+}
+
+@code {
+    private List<Phone> _phones;
+    private string nameToDelete;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _phones = await _repository.GetPhones();
+    }
+    
+    private async Task DeletePhone()
+    {
+        Phone phone = await _repository.GetPhone(nameToDelete);
+        await _repository.RemovePhone(phone);
+        await OnInitializedAsync();
+    }
+}

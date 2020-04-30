@@ -3,9 +3,10 @@
     $('#formCalcPrice').submit(function (e)
     {
         e.preventDefault();
-        var data = {};
-        data["NameOnePhone"] = $('#nameOnePhone').val();
-        data["NameSecondPhone"] = $('#nameSecondPhone').val();
+        var data = {
+            NameOnePhone: $('#nameOnePhone').val(),
+            NameSecondPhone: $('#nameSecondPhone').val()
+        };
         $.ajax({
             type: 'post',
             contentType: 'application/json',

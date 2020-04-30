@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PhoneStore.Models;
 using PhoneStore.Services;
 using PhoneStore.ViewModels;
@@ -27,11 +24,9 @@ namespace PhoneStore.Controllers
         [HttpGet]
         public async Task <IActionResult> Index()
         {
-            var phones = await _repository.GetPhones();
             var companies = await _repository.GetCompanies();
             IndexModel indexModel = new IndexModel
             {
-                Phones = phones,
                 Companies = companies
             };
             return View(indexModel);
@@ -71,19 +66,7 @@ namespace PhoneStore.Controllers
             double price = _calculate.CalculatePrice(phoneOnePrice, phoneSecondPrice);
             return Json(price);
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> Delete([FromForm] string nameToDelete)
-        {
-            Phone phone = await _repository.GetPhone(nameToDelete);
-            if (phone == null)
-            {
-                return RedirectToAction("Index");
-            }
-            await _repository.RemovePhone(phone);
-            return RedirectToAction("Index");
-        }
-        
+
         [HttpPut]
         public async Task<IActionResult> InsertPhone([FromBody] InsertPhone phone)
         {

@@ -22,6 +22,7 @@ namespace PhoneStore
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllersWithViews();
+            services.AddServerSideBlazor();
             
             services.AddAuthentication("BasicScheme")
                 .AddCookie("BasicScheme",options =>
@@ -61,6 +62,7 @@ namespace PhoneStore
             app.UseAuthorization();    
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
                 endpoints.MapControllerRoute(
                     name: "errors",
                     pattern: "Home/Errors/{errorCode}",
@@ -74,7 +76,6 @@ namespace PhoneStore
                     name: "phoneStore",
                     pattern: "PhoneStore",
                     defaults: new { controller = "Home", action = "Index" });
-
             });
         }
     }
