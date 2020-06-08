@@ -20,7 +20,6 @@ namespace PhoneStore
         
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllersWithViews();
             services.AddServerSideBlazor();
             
@@ -37,7 +36,8 @@ namespace PhoneStore
                     policy.RequireClaim("Company", "Apple");
                 });
             });
-            
+
+            string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IRepository, Repository>();
             services.AddTransient<ICalculate, PriceCalculate>();

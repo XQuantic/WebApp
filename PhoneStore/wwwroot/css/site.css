@@ -12,24 +12,22 @@
 #inputLoginForm{
     margin-top: 10px;
 }
-.infoDb{
+.indexContainer {
     margin-left: 365px;
+}
+.indexContainer div {
+    position: absolute;
 }
 .deleteForm{
     margin-left: 40px;
 }
-.containerIndex{
-    margin-left: 395px;
-}
-.containerIndex div{
-    position: absolute;
-    display: inline-block;
-}
-.calc{
-    margin-left: 200px;
+.calc {
+    margin-left: 300px;
+    margin-top: 35px;
 }
 .insertPhone{
-    margin-left: 10px;
+    margin-left: 40px;
+    margin-top: 35px;
 }
 .calc * {
   display: block;
@@ -39,9 +37,7 @@
   display: block;
   margin-top: 10px;
 }
-.deleteContainer{
-  margin-top: 20px;
-}
+
 #accessDenied{
     margin-left: 400px;
 }

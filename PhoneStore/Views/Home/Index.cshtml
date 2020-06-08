@@ -1,45 +1,23 @@
-﻿@model IndexModel
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
-<div class ="infoDb">
-    @(await Html.RenderComponentAsync<IndexDeletePhone>(RenderMode.ServerPrerendered))
-</div>
+    <div class="indexContainer">
+        @(await Html.RenderComponentAsync<IndexPhoneDeleteInsert>(RenderMode.Server))
 
-
-<div class="containerIndex">
-    
-    <div class="calc">
-        <form id="formCalcPrice">
-            <label>First phone:</label>
-            <input type="text" id="nameOnePhone" value="IPhone10"/>
-            <label>Second phone:</label>
-            <input type="text" id="nameSecondPhone" value="IPhone8"/>
-            <input type="submit" id="calcPrice" value="Calculate price"/>
-            <input type="text" value="" id="resPrice" readonly/>
-        </form>
+        <div class="calc">
+            <form id="formCalcPrice">
+                <label>First phone:</label>
+                <input type="text" id="nameOnePhone" value="IPhone10" />
+                <label>Second phone:</label>
+                <input type="text" id="nameSecondPhone" value="IPhone8" />
+                <input type="submit" id="calcPrice" value="Calculate price" />
+                <input type="text" value="" id="resPrice" readonly />
+            </form>
+        </div>
     </div>
 
-    <div class="insertPhone">
-        <form id="formInsertPhone">
-            <label>Name phone:</label>
-            <input type="text" id="namePhone"/>
-            <label>Country phone company:</label>
-            <input type="text" id="countryPhone"/>
-            <label>Price:</label>
-            <input type="text" id="pricePhone"/>
-            <label>Company:</label>
-            <select id="companyPhone">
-                @foreach (var item in Model.Companies)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </select>
-            <input type="submit" value="Insert"/>
-            <label id="resultInfo"></label>
-        </form>
-    </div>
-</div>
+
+
 
 
 

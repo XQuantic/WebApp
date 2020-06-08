@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using PhoneStore.ViewModels; 
@@ -57,30 +56,26 @@ namespace PhoneStore.Controllers
             }
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid || model.Password != model.ConfirmPassword) return View();
+            User user = await _repository.GetUser(model.Email);
+            if (user != null) return View();
+            user = new User
             {
-                User user = await _repository.GetUser(model.Email);
-                if (user == null)
-                {
-                    user = new User
-                    {
-                        Email = model.Email, 
-                        Password = model.Password,
-                        Company = model.Company
-                    };
-                    Role userRole = await _repository.GetRole("user");
-                    if (userRole != null) user.Role = userRole;
-                    await _repository.InsertUser(user);
-                    return RedirectToAction("Login", "Account");
-                }
-            }
-            return View();
+                Email = model.Email, 
+                Password = model.Password,
+                Company = model.Company,
+                Role = await _repository.GetRole("user")
+            };
+            await _repository.SaveUser(user);
+            return RedirectToAction("Login", "Account");
         }
+        
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("BasicScheme");
@@ -99,7 +94,7 @@ namespace PhoneStore.Controllers
             ClaimsPrincipal principal = new ClaimsPrincipal(id);
             AuthenticationProperties properties = new AuthenticationProperties
             {
-                IsPersistent = persistent,
+                IsPersistent = persistent
             };
             await HttpContext.SignInAsync("BasicScheme", principal, properties);
         }

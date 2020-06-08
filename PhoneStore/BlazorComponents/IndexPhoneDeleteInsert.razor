@@ -1,0 +1,98 @@
+﻿@inject IRepository Repository
+
+@if (Phones == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <ul>
+        @foreach (var item in Phones)
+        {
+            <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
+        }
+    </ul>
+    <div class="deleteForm">
+        <input @bind="NameToDelete" />
+        <input type="button" value="Delete" @onclick="DeletePhone" />
+    </div>
+
+    <div class="insertPhone">
+        <form id="formInsertPhone">
+            <label>Name phone:</label>
+            <input @bind="NamePhone" />
+            <label>Country phone company:</label>
+            <input @bind="CountryPhone" />
+            <label>Price:</label>
+            <input @bind="Price" />
+            <label>Company:</label>
+            <select @bind="CompanyId">
+                @foreach (var item in Companies)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <input type="button" value="Insert" @onclick="InsertPhone" />
+            <label>@ResultInfo</label>
+        </form>
+    </div>
+
+}
+
+@code {
+    private List<Phone> Phones { get; set; }
+    private List<Company> Companies { get; set; }
+
+    private string NameToDelete { get; set; }
+
+    private string NamePhone { get; set; }
+    private string CountryPhone { get; set; }
+    private double Price { get; set; }
+    private int CompanyId { get; set; }
+    private string ResultInfo { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Phones = await Repository.GetPhones();
+        Companies = await Repository.GetCompanies();
+    }
+
+    private async Task DeletePhone()
+    {
+        if (string.IsNullOrEmpty(NameToDelete))
+        {
+            NameToDelete = "Please fill field";
+        }
+        else
+        {
+            Phone data = await Repository.GetPhone(NameToDelete);
+            if (data != null)
+            {
+                await Repository.RemovePhone(data);
+                Phones = await Repository.GetPhones();
+            }
+            else
+            {
+                NameToDelete = "Data not found";
+            }
+        }
+    }
+
+    private async Task InsertPhone()
+    {
+        if (string.IsNullOrEmpty(NamePhone) || string.IsNullOrEmpty(CountryPhone) || CompanyId == 0)
+        {
+            ResultInfo = "Please fill fields";
+        }
+        else
+        {
+            Phone phone = new Phone() { Name = NamePhone, Country = CountryPhone, Price = Price, CompanyId = CompanyId };
+            await Repository.SavePhone(phone);
+            Phones = await Repository.GetPhones();
+            ResultInfo = "Insert complete";
+        }
+
+    }
+}
