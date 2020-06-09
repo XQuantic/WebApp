@@ -1,10 +1,20 @@
-﻿.registerForm *{
+﻿.registerForm {
+    margin-left: 403px;
+}
+.registerForm *{
     display: block;
-    margin-left: 203px;
+}
+.registerForm div {
+    display: inline-block;
+}
+.loginForm {
+    margin-left: 403px;
 }
 .loginForm *{
     display: block;
-    margin-left: 203px;
+}
+.loginForm div {
+    display: inline-block;
 }
 #inputRegisterForm{
     margin-top: 10px;

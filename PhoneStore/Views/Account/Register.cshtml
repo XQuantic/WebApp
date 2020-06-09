@@ -3,16 +3,19 @@
     ViewData["Title"] = "Register";
 }
 <div class="registerForm">
-    <form method="post" asp-controller="Account" asp-action="Register">
-        <h2>Register</h2>
-        <label asp-for="Email">Enter Email</label>
-        <input asp-for="Email"/>
-        <label asp-for="Company">Enter Company</label>
-        <input asp-for="Company"/>
-        <label asp-for="Password">Enter Password</label>
-        <input asp-for="Password"/>
-        <label asp-for="ConfirmPassword">Confirm Password</label>
-        <input asp-for="ConfirmPassword"/>
-        <input id="inputRegisterForm" type="submit" value="Register"/>
-    </form>
+    <div>
+        <form method="post" asp-controller="Account" asp-action="Register">
+            <h2>Register</h2>
+            <label asp-for="Email">Enter Email</label>
+            <input asp-for="Email"/>
+            <label asp-for="Company">Enter Company</label>
+            <input asp-for="Company"/>
+            <label asp-for="Password">Enter Password</label>
+            <input asp-for="Password"/>
+            <label asp-for="ConfirmPassword">Confirm Password</label>
+            <input asp-for="ConfirmPassword"/>
+            <input id="inputRegisterForm" type="submit" value="Register"/>
+        </form>
+    </div>
+    <div asp-validation-summary="All"></div>
 </div>
