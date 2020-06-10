@@ -1,6 +1,8 @@
-﻿@inject IRepository Repository
+﻿@using PhoneStore.ViewModels
+@inject IRepository Repository
 
-@if (Phones == null)
+
+@if (Phones is null)
 {
     <p>
         <em>Loading...</em>
@@ -15,42 +17,45 @@ else
         }
     </ul>
     <div class="deleteForm">
-        <input @bind="NameToDelete" />
-        <input type="button" value="Delete" @onclick="DeletePhone" />
+        <EditForm Model="_deletePhone" OnValidSubmit="DeletePhone">
+            <label>Name phone:</label>
+            <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
+            <input type="submit" class="btn btn-primary" value="Delete"/>
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+        </EditForm>
     </div>
 
     <div class="insertPhone">
-        <form id="formInsertPhone">
+        <EditForm Model="_newPhone" OnValidSubmit="InsertPhone">
             <label>Name phone:</label>
-            <input @bind="NamePhone" />
+            <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
             <label>Country phone company:</label>
-            <input @bind="CountryPhone" />
+            <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
             <label>Price:</label>
-            <input @bind="Price" />
+            <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
             <label>Company:</label>
-            <select @bind="CompanyId">
+            <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
+                <option value="">Select company</option>
                 @foreach (var item in Companies)
                 {
                     <option value="@item.Id">@item.Name</option>
                 }
-            </select>
-            <input type="button" value="Insert" @onclick="InsertPhone" />
+            </InputSelect>
+            <input type="submit" class="btn btn-primary" value="Insert"/>
             <label>@ResultInfo</label>
-        </form>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </EditForm>
     </div>
-
 }
 
 @code {
     private List<Phone> Phones { get; set; }
     private List<Company> Companies { get; set; }
+    private readonly InsertPhone _newPhone = new InsertPhone();
+    private readonly DeletePhone _deletePhone = new DeletePhone();
 
-    private string NameToDelete { get; set; }
-
-    private string NamePhone { get; set; }
-    private string CountryPhone { get; set; }
-    private double Price { get; set; }
-    private int CompanyId { get; set; }
     private string ResultInfo { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -61,38 +66,24 @@ else
 
     private async Task DeletePhone()
     {
-        if (string.IsNullOrEmpty(NameToDelete))
+        Phone data = await Repository.GetPhone(_deletePhone.Name);
+        if (data != null)
         {
-            NameToDelete = "Please fill field";
+            await Repository.RemovePhone(data);
+            Phones = await Repository.GetPhones();
+            _deletePhone.Name = "Successful delete";
         }
         else
         {
-            Phone data = await Repository.GetPhone(NameToDelete);
-            if (data != null)
-            {
-                await Repository.RemovePhone(data);
-                Phones = await Repository.GetPhones();
-            }
-            else
-            {
-                NameToDelete = "Data not found";
-            }
+            _deletePhone.Name = "Data not found";
         }
     }
 
     private async Task InsertPhone()
     {
-        if (string.IsNullOrEmpty(NamePhone) || string.IsNullOrEmpty(CountryPhone) || CompanyId == 0)
-        {
-            ResultInfo = "Please fill fields";
-        }
-        else
-        {
-            Phone phone = new Phone() { Name = NamePhone, Country = CountryPhone, Price = Price, CompanyId = CompanyId };
-            await Repository.SavePhone(phone);
-            Phones = await Repository.GetPhones();
-            ResultInfo = "Insert complete";
-        }
-
+        Phone phone = new Phone {Name = _newPhone.Name, Country = _newPhone.Country, Price = _newPhone.Price, CompanyId = Convert.ToInt32(_newPhone.CompanyId)};
+        await Repository.SavePhone(phone);
+        Phones = await Repository.GetPhones();
+        ResultInfo = "Insert complete";
     }
 }

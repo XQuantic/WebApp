@@ -8,13 +8,13 @@
         <form method="post" asp-action="Login" asp-controller="Account">
             <a asp-action="Register" asp-controller="Account">Register</a>
             <label asp-for="Email">Enter Email</label>
-            <input asp-for="Email"/>
+            <input class="form-control" asp-for="Email"/>
             <label asp-for="Password">Enter Password</label>
-            <input asp-for="Password"/>
+            <input class="form-control" asp-for="Password"/>
             <label asp-for="Remember">Remember me?</label>
             <input asp-for="Remember"/>
-            <input id="inputLoginForm" type="submit" value="Login"/>
+            <input id="inputLoginForm" class="btn btn-primary" type="submit" value="Login"/>
         </form>
     </div>
-    <div asp-validation-summary="All"></div>
 </div>
+<div asp-validation-summary="All"></div>

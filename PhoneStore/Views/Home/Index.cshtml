@@ -3,15 +3,14 @@
 }
     <div class="indexContainer">
         @(await Html.RenderComponentAsync<IndexPhoneDeleteInsert>(RenderMode.Server))
-
         <div class="calc">
             <form id="formCalcPrice">
                 <label>First phone:</label>
-                <input type="text" id="nameOnePhone" value="IPhone10" />
+                <input class="form-control" type="text" id="nameOnePhone" value="IPhone10" />
                 <label>Second phone:</label>
-                <input type="text" id="nameSecondPhone" value="IPhone8" />
-                <input type="submit" id="calcPrice" value="Calculate price" />
-                <input type="text" value="" id="resPrice" readonly />
+                <input class="form-control" type="text" id="nameSecondPhone" value="IPhone8" />
+                <input type="submit" class="btn btn-primary" id="calcPrice" value="Calculate price" />
+                <input class="form-control" type="text" value="" id="resPrice" readonly />
             </form>
         </div>
     </div>
