@@ -14,7 +14,7 @@
             dataType: "json",
             data: JSON.stringify(data),
             complete: function (response) {
-                $("#resPrice").val(response.responseJSON);
+                $("#resPrice").text(response.responseJSON);
             }
         });
     });

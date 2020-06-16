@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace PhoneStore.Controllers
 {
     [AllowAnonymous]
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
         private readonly IRepository _repository;
@@ -43,7 +44,6 @@ namespace PhoneStore.Controllers
         }
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm] LoginModel model)
         {
             if (ModelState.IsValid)
@@ -59,7 +59,6 @@ namespace PhoneStore.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterModel model)
         {
             if (!ModelState.IsValid || model.Password != model.ConfirmPassword) return View();

@@ -18,36 +18,50 @@ else
     </ul>
     <div class="deleteForm">
         <EditForm Model="_deletePhone" OnValidSubmit="DeletePhone">
-            <label>Name phone:</label>
-            <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
-            <input type="submit" class="btn btn-primary" value="Delete"/>
             <DataAnnotationsValidator/>
-            <ValidationSummary/>
+            <div>
+                <label>Name phone:</label>
+                <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
+                <ValidationMessage For="@(() => _deletePhone.Name)"></ValidationMessage>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Delete"/>
         </EditForm>
     </div>
 
     <div class="insertPhone">
         <EditForm Model="_newPhone" OnValidSubmit="InsertPhone">
-            <label>Name phone:</label>
-            <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
-            <label>Country phone company:</label>
-            <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
-            <label>Price:</label>
-            <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
-            <label>Company:</label>
-            <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
-                <option value="">Select company</option>
-                @foreach (var item in Companies)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </InputSelect>
-            <input type="submit" class="btn btn-primary" value="Insert"/>
-            <label>@ResultInfo</label>
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            <div>
+                <label>Name phone:</label>
+                <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
+                <ValidationMessage For="@(() => _newPhone.Name)"></ValidationMessage>
+            </div>
+            <div>
+                <label>Country phone company:</label>
+                <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
+                <ValidationMessage For="@(() => _newPhone.Country)"></ValidationMessage>
+            </div>
+            <div>
+                <label>Price:</label>
+                <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
+                <ValidationMessage For="@(() => _newPhone.Price)"></ValidationMessage>
+            </div>
+            <div>
+                <label>Company:</label>
+                <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
+                    <option value="">Select company</option>
+                    @foreach (var item in Companies)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _newPhone.CompanyId)"></ValidationMessage>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Insert" />
+            <label>@ResultInfo</label>
         </EditForm>
     </div>
+    
 }
 
 @code {

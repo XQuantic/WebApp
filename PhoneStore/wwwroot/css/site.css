@@ -4,17 +4,11 @@
 .registerForm *{
     display: block;
 }
-.registerForm div {
-    display: inline-block;
-}
 .loginForm {
     margin-left: 403px;
 }
 .loginForm *{
     display: block;
-}
-.loginForm div {
-    display: inline-block;
 }
 #inputRegisterForm{
     margin-top: 10px;
@@ -32,37 +26,44 @@
     margin-left: 40px;
 }
 .deleteForm *{
-    margin-top: 10px;
+    margin-top: 5px;
+}
+.deleteForm div {
+    position: static;
 }
 .calc {
     margin-left: 300px;
-    margin-top: 180px;
+    margin-top: 150px;
+}
+.calc div {
+    position: static;
+}
+.calc * {
+    margin-top: 5px;
 }
 .insertPhone{
     margin-left: 40px;
-    margin-top: 180px;
+    margin-top: 150px;
 }
-.calc * {
-  display: block;
-  margin-top: 10px;
+.insertPhone div{
+    position: static;
 }
 .insertPhone * {
-  display: block;
-  margin-top: 5px;
+    margin-top: 5px;
 }
 .input-validation-error {
     border: 1px solid #f00;
     background-color: #fee;
 }
-.validation-summary-errors {
+.field-validation-error {
     color: red;
-    margin-left: 362px;
-    margin-top: 10px;
+    margin-top: 3px;
+    margin-left: 5px;
 }
-.validation-errors {
+.validation-message {
     color: red;
-    margin: 0;
-    padding: 0;
+    margin-top: 3px;
+    margin-left: 5px;
 }
 .invalid {
     border: 1px solid red;

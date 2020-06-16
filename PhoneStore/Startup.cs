@@ -1,5 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,10 +24,20 @@ namespace PhoneStore
         {
             services.AddControllersWithViews();
             services.AddServerSideBlazor();
-            
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie = new CookieBuilder
+                {
+                    Name = "AntiForgery",
+                    HttpOnly = true,
+                    SecurePolicy = CookieSecurePolicy.Always,
+                };
+                options.FormFieldName = "AntiForgery";
+            });
             services.AddAuthentication("BasicScheme")
                 .AddCookie("BasicScheme",options =>
                 {
+                    options.Cookie.Name = "LoginCookie";
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                 });
@@ -36,7 +48,6 @@ namespace PhoneStore
                     policy.RequireClaim("Company", "Apple");
                 });
             });
-
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IRepository, Repository>();

@@ -3,19 +3,28 @@
     ViewData["Title"] = "Register";
 }
 <div class="registerForm">
-    <div>
-        <form method="post" asp-controller="Account" asp-action="Register">
-            <h2>Register</h2>
+    <form method="post" asp-controller="Account" asp-action="Register">
+        <h2>Register</h2>
+        <div>
             <label asp-for="Email">Enter Email</label>
-            <input class="form-control" asp-for="Email"/>
+            <input class="form-control" asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
             <label asp-for="Company">Enter Company</label>
-            <input class="form-control" asp-for="Company"/>
+            <input class="form-control" asp-for="Company" />
+            <span asp-validation-for="Company"></span>
+        </div>
+        <div>
             <label asp-for="Password">Enter Password</label>
-            <input class="form-control" asp-for="Password"/>
+            <input class="form-control" asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
             <label asp-for="ConfirmPassword">Confirm Password</label>
-            <input class="form-control" asp-for="ConfirmPassword"/>
-            <input class="btn btn-primary" id="inputRegisterForm" type="submit" value="Register"/>
-        </form>
-    </div>
+            <input class="form-control" asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <input class="btn btn-primary" id="inputRegisterForm" type="submit" value="Register" />
+    </form>
 </div>
-<div asp-validation-summary="All"></div>
