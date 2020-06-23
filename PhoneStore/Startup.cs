@@ -80,13 +80,13 @@ namespace PhoneStore
                     defaults: new { controller = "Home", action = "Errors" });
 
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                
-                endpoints.MapControllerRoute(
                     name: "phoneStore",
                     pattern: "PhoneStore",
                     defaults: new { controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

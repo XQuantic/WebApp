@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
     <div class="indexContainer">
-        @(await Html.RenderComponentAsync<IndexPhoneDeleteInsert>(RenderMode.Server))
+        <component type="typeof(IndexPhoneDeleteInsert)" render-mode="ServerPrerendered"/>
         <div class="calc">
             <form id="formCalcPrice">
                 <div>

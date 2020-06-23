@@ -6,9 +6,9 @@ namespace PhoneStore.ViewModels
 {
     public class NamePhones
     {
-        [Required]
+        [Required(ErrorMessage = "Please fill first phone")]
         public string NameOnePhone { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please fill second phone")]
         public string NameSecondPhone { get; set; }
     }
 }

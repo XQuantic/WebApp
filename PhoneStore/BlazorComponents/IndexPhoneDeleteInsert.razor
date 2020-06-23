@@ -22,7 +22,7 @@ else
             <div>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
-                <ValidationMessage For="@(() => _deletePhone.Name)"></ValidationMessage>
+                <ValidationMessage For="() => _deletePhone.Name"></ValidationMessage>
             </div>
             <input type="submit" class="btn btn-primary" value="Delete"/>
         </EditForm>
@@ -34,17 +34,17 @@ else
             <div>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
-                <ValidationMessage For="@(() => _newPhone.Name)"></ValidationMessage>
+                <ValidationMessage For="() => _newPhone.Name"></ValidationMessage>
             </div>
             <div>
                 <label>Country phone company:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
-                <ValidationMessage For="@(() => _newPhone.Country)"></ValidationMessage>
+                <ValidationMessage For="() => _newPhone.Country"></ValidationMessage>
             </div>
             <div>
                 <label>Price:</label>
                 <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
-                <ValidationMessage For="@(() => _newPhone.Price)"></ValidationMessage>
+                <ValidationMessage For="() => _newPhone.Price"></ValidationMessage>
             </div>
             <div>
                 <label>Company:</label>

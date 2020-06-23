@@ -81,7 +81,8 @@ namespace PhoneStore.Controllers
             await HttpContext.SignOutAsync("BasicScheme");
             return RedirectToAction("Login", "Account");
         }
-        
+
+        [NonAction]
         private async Task Authenticate(User user, bool persistent)
         {
             List<Claim> claims = new List<Claim>
