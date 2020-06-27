@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PhoneStore.Models;
 using PhoneStore.Services;
 using PhoneStore.ViewModels;
 
@@ -17,25 +11,21 @@ namespace PhoneStore.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ICalculate _calculate;
-
-
         public ValuesController(ICalculate calculate)
         {
             _calculate = calculate;
         }
 
         [HttpPost("calcPrice")]
+        [Produces("application/json")]
         public async Task<IActionResult> CalcPrice([FromBody] NamePhones phones)
         {
-            string result;
             double price = await _calculate.CalculatePrice(phones);
             if (price == -1)
             {
-                result = JsonConvert.SerializeObject("Data not found");
-                return NotFound(result);
+                return NotFound();
             }
-            result = JsonConvert.SerializeObject(price + "$");
-            return Ok(result);
+            return Ok(price);
         }
     }
 }

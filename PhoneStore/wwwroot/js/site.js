@@ -12,13 +12,17 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                $("#resPrice").text(response);
+                $("#resPrice").text(response + "$");
             },
             error: function (response) {
-                if (response.status == 404) $("#resPrice").text(response.responseJSON);
-                if (response.responseJSON.errors["NameOnePhone"] != null) $("#nameOnePhone").val(response.responseJSON.errors["NameOnePhone"][0]);
-                if (response.responseJSON.errors["NameSecondPhone"] != null) $("#nameSecondPhone").val(response.responseJSON.errors["NameSecondPhone"][0]);
+                validate(response);
             }
         });
     });
 });
+
+var validate = function(data) {
+    if (data.status == 404) $("#resPrice").text("Data not found");
+    if (data.responseJSON.errors["NameOnePhone"] != null) $("#nameOnePhone").val(data.responseJSON.errors["NameOnePhone"][0]);
+    if (data.responseJSON.errors["NameSecondPhone"] != null) $("#nameSecondPhone").val(data.responseJSON.errors["NameSecondPhone"][0]);
+}
