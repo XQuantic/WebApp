@@ -20,7 +20,7 @@
     margin-left: 365px;
 }
 .indexContainer div {
-    position: absolute;
+    display: inline-table;
 }
 .deleteForm{
     margin-left: 40px;
@@ -28,28 +28,20 @@
 .deleteForm *{
     margin-top: 5px;
 }
-.deleteForm div {
-    position: static;
-}
 .calc {
-    margin-left: 300px;
-    margin-top: 150px;
-}
-.calc div {
-    position: static;
+    margin-left: 40px;
 }
 .calc * {
     margin-top: 5px;
 }
 .insertPhone{
     margin-left: 40px;
-    margin-top: 150px;
-}
-.insertPhone div{
-    position: static;
 }
 .insertPhone * {
     margin-top: 5px;
+}
+.pagesPhone {
+    margin-left: 35px;
 }
 .input-validation-error {
     border: 1px solid #f00;

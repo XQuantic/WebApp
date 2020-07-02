@@ -1,5 +1,7 @@
 ﻿@using PhoneStore.ViewModels
+@using PhoneStore.Services
 @inject IRepository Repository
+@inject IPhoneService PhoneService
 
 
 @if (Phones is null)
@@ -10,63 +12,71 @@
 }
 else
 {
-    <ul>
-        @foreach (var item in Phones)
-        {
-            <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
-        }
-    </ul>
+    <div>
+        <ul>
+            @foreach (var item in Phones)
+            {
+                <li>@item.Company.Name - @item.Name - @item.Country - @item.Price$</li>
+            }
+        </ul>
+        <div class="pagesPhone">
+            @for (int i = 1; i <= PagingInfo.TotalPages; i++)
+            {
+                int page = i;
+                <a class="btn @(i == PagingInfo.CurrentPage ? "btn-primary" : "btn-secondary") m-1" @onclick="() => PagePhone(page)">@i</a>
+            }
+        </div>
+    </div>
     <div class="deleteForm">
         <EditForm Model="_deletePhone" OnValidSubmit="DeletePhone">
-            <DataAnnotationsValidator/>
-            <div>
+            <DataAnnotationsValidator />
+            <p>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
                 <ValidationMessage For="() => _deletePhone.Name"></ValidationMessage>
-            </div>
-            <input type="submit" class="btn btn-primary" value="Delete"/>
+            </p>
+            <input type="submit" class="btn btn-primary" value="Delete" />
         </EditForm>
     </div>
-
     <div class="insertPhone">
         <EditForm Model="_newPhone" OnValidSubmit="InsertPhone">
             <DataAnnotationsValidator />
-            <div>
+            <p>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
                 <ValidationMessage For="() => _newPhone.Name"></ValidationMessage>
-            </div>
-            <div>
+            </p>
+            <p>
                 <label>Country phone company:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
                 <ValidationMessage For="() => _newPhone.Country"></ValidationMessage>
-            </div>
-            <div>
+            </p>
+            <p>
                 <label>Price:</label>
                 <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
                 <ValidationMessage For="() => _newPhone.Price"></ValidationMessage>
-            </div>
-            <div>
+            </p>
+            <p>
                 <label>Company:</label>
                 <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
-                    <option value="">Select company</option>
+                    <option disabled selected value="">Select company</option>
                     @foreach (var item in Companies)
-                    {
+                        {
                         <option value="@item.Id">@item.Name</option>
-                    }
+                        }
                 </InputSelect>
                 <ValidationMessage For="@(() => _newPhone.CompanyId)"></ValidationMessage>
-            </div>
+            </p>
             <input type="submit" class="btn btn-primary" value="Insert" />
             <label>@ResultInfo</label>
         </EditForm>
     </div>
-    
 }
 
 @code {
     private List<Phone> Phones { get; set; }
     private List<Company> Companies { get; set; }
+    private PagingInfo PagingInfo { get; set; }
     private readonly InsertPhone _newPhone = new InsertPhone();
     private readonly DeletePhone _deletePhone = new DeletePhone();
 
@@ -74,8 +84,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Phones = await Repository.GetPhones();
+        Phones = (await PhoneService.GetPhoneItems(1)).ToList();
         Companies = await Repository.GetCompanies();
+        PagingInfo = await PhoneService.GetNumberOfPages(1);
     }
 
     private async Task DeletePhone()
@@ -84,7 +95,7 @@ else
         if (data != null)
         {
             await Repository.RemovePhone(data);
-            Phones = await Repository.GetPhones();
+            await PagePhone(PagingInfo.CurrentPage);
             _deletePhone.Name = "Successful delete";
         }
         else
@@ -95,9 +106,25 @@ else
 
     private async Task InsertPhone()
     {
-        Phone phone = new Phone {Name = _newPhone.Name, Country = _newPhone.Country, Price = _newPhone.Price, CompanyId = Convert.ToInt32(_newPhone.CompanyId)};
+        Phone phone = new Phone { Name = _newPhone.Name, Country = _newPhone.Country, Price = _newPhone.Price, CompanyId = Convert.ToInt32(_newPhone.CompanyId) };
         await Repository.SavePhone(phone);
-        Phones = await Repository.GetPhones();
+        await PagePhone(PagingInfo.CurrentPage);
         ResultInfo = "Insert complete";
+    }
+
+    private async Task PagePhone(int phonePage)
+    {
+        PagingInfo = await PhoneService.GetNumberOfPages(phonePage);
+        if (phonePage > PagingInfo.TotalPages)
+        {
+            Phones = (await PhoneService.GetPhoneItems(phonePage - 1))
+                .ToList();
+            PagingInfo.CurrentPage = phonePage - 1;
+        }
+        else
+        {
+            Phones = (await PhoneService.GetPhoneItems(phonePage))
+                .ToList();
+        }
     }
 }

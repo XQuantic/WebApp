@@ -51,7 +51,7 @@ namespace PhoneStore
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IRepository, Repository>();
             services.AddTransient<ICalculate, PriceCalculate>();
-            
+            services.AddTransient<IPhoneService, PhoneService>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
