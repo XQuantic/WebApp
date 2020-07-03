@@ -1,63 +1,32 @@
-﻿.registerForm {
-    margin-left: 403px;
+﻿input, select{
+    margin-top: 5px;
 }
-.registerForm *{
-    display: block;
+.registerForm {
+    left: 403px;
+    position: absolute;
 }
 .loginForm {
-    margin-left: 403px;
+    left: 403px;
+    position: absolute;
 }
-.loginForm *{
-    display: block;
+.index {
+    left: 365px;
+    position: absolute
 }
-#inputRegisterForm{
-    margin-top: 10px;
-}
-#inputLoginForm{
-    margin-top: 10px;
-}
-.indexContainer {
-    margin-left: 365px;
-}
-.indexContainer div {
-    display: inline-table;
-}
-.deleteForm{
-    margin-left: 40px;
-}
-.deleteForm *{
-    margin-top: 5px;
-}
-.calc {
-    margin-left: 40px;
-}
-.calc * {
-    margin-top: 5px;
-}
-.insertPhone{
-    margin-left: 40px;
-}
-.insertPhone * {
-    margin-top: 5px;
+.indexComponent {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
 }
 .pagesPhone {
     margin-left: 35px;
 }
-.input-validation-error {
-    border: 1px solid #f00;
-    background-color: #fee;
-}
-.field-validation-error {
+.field-validation-error, .validation-message {
     color: red;
     margin-top: 3px;
     margin-left: 5px;
 }
-.validation-message {
-    color: red;
-    margin-top: 3px;
-    margin-left: 5px;
-}
-.invalid {
+.invalid, .input-validation-error {
     border: 1px solid red;
     background-color: #fee;
 }

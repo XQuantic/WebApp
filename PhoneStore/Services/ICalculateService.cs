@@ -3,7 +3,7 @@ using PhoneStore.ViewModels;
 
 namespace PhoneStore.Services
 {
-    public interface ICalculate
+    public interface ICalculateService
     {
         Task<double> CalculatePrice(NamePhones phones);
     }

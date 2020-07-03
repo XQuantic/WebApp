@@ -1,18 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<div class="indexContainer">
+<div class="index">
     <component type="typeof(IndexPhoneDeleteInsert)" render-mode="ServerPrerendered"/>
-    <div class="calc">
+    <div class="indexComponent">
         <form id="formCalcPrice">
-            <p>
+            <div>
                 <label>First phone:</label>
                 <input class="form-control" type="text" id="nameOnePhone" value="IPhone10"/>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>Second phone:</label>
                 <input class="form-control" type="text" id="nameSecondPhone" value="IPhone8"/>
-            </p>
+            </div>
             <input type="submit" class="btn btn-primary" id="calcPrice" value="Calculate price"/>
             <p style="font-size: 14pt">Price: <label id="resPrice">0</label></p>
         </form>

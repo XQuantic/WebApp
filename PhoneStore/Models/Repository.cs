@@ -14,18 +14,18 @@ namespace PhoneStore.Models
         }
         public async Task<List<Phone>> GetPhones()
         {
-            return await _db.Phones.Include(x => x.Company)
-                .ToListAsync();
+            return await _db.Phones.Include(phone => phone.Company).ToListAsync();
         }
+        public Task<List<Company>> GetCompanies()
+        {
 
+            return _db.Companies.Select(company => company).ToListAsync();
+        }
         public async Task<Phone> GetPhone(string name)
         {
-            return await _db.Phones.FirstOrDefaultAsync(x => x.Name == name);
+            return await _db.Phones.FirstOrDefaultAsync(phone => phone.Name == name);
         }
-        public async Task<List<Company>> GetCompanies()
-        {
-            return await _db.Companies.ToListAsync();
-        }
+       
         public async Task RemovePhone(Phone phone)
         {
             _db.Phones.Remove(phone);
@@ -38,12 +38,12 @@ namespace PhoneStore.Models
         }
         public async Task<User> GetUser(string email)
         {
-            return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _db.Users.FirstOrDefaultAsync(user => user.Email == email);
         }
         public async Task<User> GetUser(string email, string password)
         {
-            return await _db.Users.Include(x => x.Role)
-                .FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
+            return await _db.Users.Include(user => user.Role)
+                .FirstOrDefaultAsync(user => user.Email == email && user.Password == password);
         }
         public async Task SaveUser(User user)
         {
@@ -52,7 +52,7 @@ namespace PhoneStore.Models
         }
         public async Task<Role> GetRole(string roleName)
         {
-            return await _db.Roles.FirstOrDefaultAsync(x => x.Name == roleName);
+            return await _db.Roles.FirstOrDefaultAsync(role => role.Name == roleName);
         }
     }
 }

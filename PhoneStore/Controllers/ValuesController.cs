@@ -10,8 +10,8 @@ namespace PhoneStore.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly ICalculate _calculate;
-        public ValuesController(ICalculate calculate)
+        private readonly ICalculateService _calculate;
+        public ValuesController(ICalculateService calculate)
         {
             _calculate = calculate;
         }

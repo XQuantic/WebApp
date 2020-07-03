@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PhoneStore.Models;
@@ -18,13 +17,15 @@ namespace PhoneStore.Services
             _pageSize = 2;
         }
 
-        public async Task<IEnumerable<Phone>> GetPhoneItems(int phonePage)
+        public async Task<List<Phone>> GetPhoneItems(int phonePage)
         {
-            var phones = (await _repository.GetPhones())
+            var phones = await _repository.GetPhones();
+            var phoneItems = phones
                 .OrderBy(p => p.Id)
                 .Skip((phonePage - 1) * _pageSize)
-                .Take(_pageSize);
-            return phones;
+                .Take(_pageSize)
+                .ToList();
+            return phoneItems;
         }
 
         public async Task<PagingInfo> GetNumberOfPages(int phonePage)

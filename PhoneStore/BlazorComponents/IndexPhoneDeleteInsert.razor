@@ -12,7 +12,7 @@
 }
 else
 {
-    <div>
+    <div class= "indexComponent">
         <ul>
             @foreach (var item in Phones)
             {
@@ -27,36 +27,36 @@ else
             }
         </div>
     </div>
-    <div class="deleteForm">
+    <div class="indexComponent">
         <EditForm Model="_deletePhone" OnValidSubmit="DeletePhone">
             <DataAnnotationsValidator />
-            <p>
+            <div>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_deletePhone.Name"></InputText>
                 <ValidationMessage For="() => _deletePhone.Name"></ValidationMessage>
-            </p>
+            </div>
             <input type="submit" class="btn btn-primary" value="Delete" />
         </EditForm>
     </div>
-    <div class="insertPhone">
+    <div class="indexComponent">
         <EditForm Model="_newPhone" OnValidSubmit="InsertPhone">
             <DataAnnotationsValidator />
-            <p>
+            <div>
                 <label>Name phone:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Name"></InputText>
                 <ValidationMessage For="() => _newPhone.Name"></ValidationMessage>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>Country phone company:</label>
                 <InputText class="form-control" @bind-Value="_newPhone.Country"></InputText>
                 <ValidationMessage For="() => _newPhone.Country"></ValidationMessage>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>Price:</label>
                 <InputNumber class="form-control" @bind-Value="_newPhone.Price"></InputNumber>
                 <ValidationMessage For="() => _newPhone.Price"></ValidationMessage>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>Company:</label>
                 <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
                     <option disabled selected value="">Select company</option>
@@ -66,7 +66,7 @@ else
                         }
                 </InputSelect>
                 <ValidationMessage For="@(() => _newPhone.CompanyId)"></ValidationMessage>
-            </p>
+            </div>
             <input type="submit" class="btn btn-primary" value="Insert" />
             <label>@ResultInfo</label>
         </EditForm>
@@ -84,7 +84,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Phones = (await PhoneService.GetPhoneItems(1)).ToList();
+        Phones = await PhoneService.GetPhoneItems(1);
         Companies = await Repository.GetCompanies();
         PagingInfo = await PhoneService.GetNumberOfPages(1);
     }
@@ -117,14 +117,12 @@ else
         PagingInfo = await PhoneService.GetNumberOfPages(phonePage);
         if (phonePage > PagingInfo.TotalPages)
         {
-            Phones = (await PhoneService.GetPhoneItems(phonePage - 1))
-                .ToList();
+            Phones = await PhoneService.GetPhoneItems(phonePage - 1);
             PagingInfo.CurrentPage = phonePage - 1;
         }
         else
         {
-            Phones = (await PhoneService.GetPhoneItems(phonePage))
-                .ToList();
+            Phones = await PhoneService.GetPhoneItems(phonePage);
         }
     }
 }

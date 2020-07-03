@@ -4,11 +4,11 @@ using PhoneStore.ViewModels;
 
 namespace PhoneStore.Services
 {
-    public class PriceCalculate : ICalculate
+    public class CalculateService : ICalculateService
     {
         private readonly IRepository _repository;
 
-        public PriceCalculate(IRepository repository)
+        public CalculateService(IRepository repository)
         {
             _repository = repository;
         }

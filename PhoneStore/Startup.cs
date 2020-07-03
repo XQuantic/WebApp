@@ -50,7 +50,7 @@ namespace PhoneStore
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IRepository, Repository>();
-            services.AddTransient<ICalculate, PriceCalculate>();
+            services.AddTransient<ICalculateService, CalculateService>();
             services.AddTransient<IPhoneService, PhoneService>();
         }
         
