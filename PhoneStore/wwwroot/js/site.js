@@ -8,7 +8,7 @@
         $.ajax({
             type: "post",
             dataType: "json",
-            url: "api/values/calcPrice",
+            url: "api/phone/calcPrice",
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {

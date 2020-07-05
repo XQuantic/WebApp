@@ -1,5 +1,7 @@
 ﻿@using PhoneStore.ViewModels
 @using PhoneStore.Services
+@using System.Net.Http
+@inject HttpClient Http
 @inject IRepository Repository
 @inject IPhoneService PhoneService
 
@@ -12,7 +14,7 @@
 }
 else
 {
-    <div class= "indexComponent">
+    <div class="indexComponent">
         <ul>
             @foreach (var item in Phones)
             {
@@ -91,14 +93,13 @@ else
 
     private async Task DeletePhone()
     {
-        Phone data = await Repository.GetPhone(_deletePhone.Name);
-        if (data != null)
+        try
         {
-            await Repository.RemovePhone(data);
+            await Http.SendJsonAsync(HttpMethod.Post, "https://localhost:44302/api/Phone/DeletePhone", _deletePhone.Name);
             await PagePhone(PagingInfo.CurrentPage);
             _deletePhone.Name = "Successful delete";
         }
-        else
+        catch (HttpRequestException)
         {
             _deletePhone.Name = "Data not found";
         }
@@ -107,7 +108,7 @@ else
     private async Task InsertPhone()
     {
         Phone phone = new Phone { Name = _newPhone.Name, Country = _newPhone.Country, Price = _newPhone.Price, CompanyId = Convert.ToInt32(_newPhone.CompanyId) };
-        await Repository.SavePhone(phone);
+        await Http.SendJsonAsync(HttpMethod.Post, "https://localhost:44302/api/Phone/InsertPhone", phone);
         await PagePhone(PagingInfo.CurrentPage);
         ResultInfo = "Insert complete";
     }

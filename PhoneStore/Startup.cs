@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,6 +53,7 @@ namespace PhoneStore
             services.AddScoped<IRepository, Repository>();
             services.AddTransient<ICalculateService, CalculateService>();
             services.AddTransient<IPhoneService, PhoneService>();
+            services.AddSingleton<HttpClient>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
