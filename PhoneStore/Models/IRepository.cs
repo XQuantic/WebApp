@@ -9,6 +9,7 @@ namespace PhoneStore.Models
         Task<List<Phone>> GetPhones();
         Task<List<Company>> GetCompanies();
         Task<Phone> GetPhone(string name);
+        Task<Phone> GetPhoneId(int id);
         Task RemovePhone(Phone phone);
         Task SavePhone(Phone phone);
         Task<User> GetUser(string email, string password);

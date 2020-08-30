@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PhoneStore.Models;
 using PhoneStore.Services;
@@ -27,15 +25,15 @@ namespace PhoneStore.Controllers
             double price = await _calculate.CalculatePrice(phones);
             if (price == -1)
             {
-                return NotFound();
+                return NotFound("Data not found");
             }
             return Ok(price);
         }
 
-        [HttpPost("DeletePhone")]
-        public async Task<IActionResult> DeletePhone([FromBody] string phoneName)
+        [HttpDelete("DeletePhone/{id}")]
+        public async Task<IActionResult> DeletePhone([FromRoute] int id)
         {
-            Phone data = await _repository.GetPhone(phoneName);
+            Phone data = await _repository.GetPhoneId(id);
             if (data == null) return NotFound();
             await _repository.RemovePhone(data);
             return Ok();
@@ -45,7 +43,7 @@ namespace PhoneStore.Controllers
         public async Task<IActionResult> InsertPhone([FromBody] Phone phone)
         {
             await _repository.SavePhone(phone);
-            return Ok();
+            return Ok(new { Message = "Insert complete" });
         }
     }
 }

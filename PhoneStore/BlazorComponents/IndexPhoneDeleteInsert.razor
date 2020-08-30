@@ -63,22 +63,24 @@ else
                 <InputSelect class="form-control" @bind-Value="_newPhone.CompanyId">
                     <option disabled selected value="">Select company</option>
                     @foreach (var item in Companies)
-                        {
+                    {
                         <option value="@item.Id">@item.Name</option>
-                        }
+                    }
                 </InputSelect>
                 <ValidationMessage For="@(() => _newPhone.CompanyId)"></ValidationMessage>
             </div>
+            <input @bind="value" @bind:event="oninput"/>
+            <p>@value</p>
             <input type="submit" class="btn btn-primary" value="Insert" />
             <label>@ResultInfo</label>
         </EditForm>
     </div>
 }
-
 @code {
     private List<Phone> Phones { get; set; }
     private List<Company> Companies { get; set; }
     private PagingInfo PagingInfo { get; set; }
+    private string value { get; set; }
     private readonly InsertPhone _newPhone = new InsertPhone();
     private readonly DeletePhone _deletePhone = new DeletePhone();
 
@@ -95,9 +97,10 @@ else
     {
         try
         {
-            await Http.SendJsonAsync(HttpMethod.Post, "https://localhost:44302/api/Phone/DeletePhone", _deletePhone.Name);
+            int? id = Phones.FirstOrDefault(phone => phone.Name == _deletePhone.Name)?.Id;
+            await Http.DeleteAsync($"api/phone/deletePhone/{id}");
             await PagePhone(PagingInfo.CurrentPage);
-            _deletePhone.Name = "Successful delete";
+            _deletePhone.Name = "Delete complete";
         }
         catch (HttpRequestException)
         {
@@ -108,14 +111,14 @@ else
     private async Task InsertPhone()
     {
         Phone phone = new Phone { Name = _newPhone.Name, Country = _newPhone.Country, Price = _newPhone.Price, CompanyId = Convert.ToInt32(_newPhone.CompanyId) };
-        await Http.SendJsonAsync(HttpMethod.Post, "https://localhost:44302/api/Phone/InsertPhone", phone);
+        InsertPhoneResponse response = await Http.PostJsonAsync<InsertPhoneResponse>("api/Phone/InsertPhone", phone);
         await PagePhone(PagingInfo.CurrentPage);
-        ResultInfo = "Insert complete";
+        ResultInfo = response.Message;
     }
 
     private async Task PagePhone(int phonePage)
     {
-        PagingInfo = await PhoneService.GetNumberOfPages(phonePage);
+        PagingInfo.TotalItems = (await Repository.GetPhones()).Count;
         if (phonePage > PagingInfo.TotalPages)
         {
             Phones = await PhoneService.GetPhoneItems(phonePage - 1);
@@ -124,6 +127,7 @@ else
         else
         {
             Phones = await PhoneService.GetPhoneItems(phonePage);
+            PagingInfo.CurrentPage = phonePage;
         }
     }
 }

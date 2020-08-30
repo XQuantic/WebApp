@@ -5,6 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Migrations\20200727234553_123.cs" />
+      <Compile Remove="Migrations\20200727234553_123.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />

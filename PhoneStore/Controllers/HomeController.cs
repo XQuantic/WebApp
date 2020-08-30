@@ -27,6 +27,5 @@ namespace PhoneStore.Controllers
         {
             return Content("Error");
         }
-        
     }
 }

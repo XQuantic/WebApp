@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,7 +54,7 @@ namespace PhoneStore
             services.AddScoped<IRepository, Repository>();
             services.AddTransient<ICalculateService, CalculateService>();
             services.AddTransient<IPhoneService, PhoneService>();
-            services.AddSingleton<HttpClient>();
+            services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44302/") });
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

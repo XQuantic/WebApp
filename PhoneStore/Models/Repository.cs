@@ -25,7 +25,12 @@ namespace PhoneStore.Models
         {
             return await _db.Phones.FirstOrDefaultAsync(phone => phone.Name == name);
         }
-       
+
+        public async Task<Phone> GetPhoneId(int id)
+        {
+            return await _db.Phones.FirstOrDefaultAsync(phone => phone.Id == id);
+        }
+
         public async Task RemovePhone(Phone phone)
         {
             _db.Phones.Remove(phone);
